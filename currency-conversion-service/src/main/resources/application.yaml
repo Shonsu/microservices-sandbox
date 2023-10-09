@@ -5,7 +5,18 @@ spring:
     name: currency-conversion
   config:
     import: optional:configserver:http://localhost:8888
+#  cloud:
+#    openfeign:
+#      micrometer:
+#        enabled: false
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
