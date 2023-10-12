@@ -7,13 +7,14 @@
         <groupId>pl.shonsu</groupId>
         <artifactId>microservices</artifactId>
         <version>1.0-SNAPSHOT</version>
+
     </parent>
 
     <artifactId>spring-cloud-config-server</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -28,6 +29,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.1.4</version>
+                <configuration>
+                    <image>
+                        <name>shonsu/msrvc-${project.artifactId}:${project.version}</name>
+                        <env>
+                            <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                        </env>
+                    </image>
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                </configuration>
             </plugin>
         </plugins>
     </build>

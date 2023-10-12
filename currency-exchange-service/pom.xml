@@ -12,68 +12,95 @@
     <artifactId>currency-exchange-service</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-<dependencies>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-webflux</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-resolver-dns-native-macos</artifactId>
-        <classifier>osx-aarch_64</classifier>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-config</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-observation</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-tracing-bridge-brave</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>io.zipkin.reporter2</groupId>
-        <artifactId>zipkin-reporter-brave</artifactId>
-        <version>2.16.3</version>
-    </dependency>
-    <!--    <dependency>-->
-    <!--        <groupId>org.springframework.amqp</groupId>-->
-    <!--        <artifactId>spring-rabbit</artifactId>-->
-    <!--    </dependency>-->
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-    </dependency>
-</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <classifier>osx-aarch_64</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-observation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+            <version>2.16.3</version>
+        </dependency>
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.amqp</groupId>-->
+        <!--        <artifactId>spring-rabbit</artifactId>-->
+        <!--    </dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.1.4</version>
+                <configuration>
+                    <image>
+                        <name>shonsu/msrvc-${project.artifactId}:${project.version}</name>
+<!--                        <buildpacks>-->
+<!--                            <buildpack>paketo-buildpacks/ca-certificates</buildpack>-->
+<!--                            <buildpack>gcr.io/paketo-buildpacks/oracle</buildpack>-->
+<!--                            <buildpack>paketo-buildpacks/syft</buildpack>-->
+<!--                            <buildpack>paketo-buildpacks/executable-jar</buildpack>-->
+<!--                            <buildpack>paketo-buildpacks/dist-zip</buildpack>-->
+<!--                            <buildpack>paketo-buildpacks/spring-boot</buildpack>-->
+<!--                        </buildpacks>-->
+                        <!-- OR: -->
+                        <env>
+                            <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                        </env>
+                    </image>
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

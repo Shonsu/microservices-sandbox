@@ -1,0 +1,77 @@
+services:
+  eureka-server:
+    platform: linux/amd64
+    image: shonsu/msrvc-eureka-server:1.0-SNAPSHOT
+    ports:
+      - "8761:8761"
+    networks:
+      - currency-network
+    environment:
+      SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
+
+  spring-cloud-config-server:
+    platform: linux/amd64
+    image: shonsu/msrvc-spring-cloud-config-server:1.0-SNAPSHOT
+    ports:
+      - "8888:8888"
+    networks:
+      - currency-network
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
+
+  currency-exchange:
+    platform: linux/amd64
+    image: shonsu/msrvc-currency-exchange-service:1.0-SNAPSHOT
+    ports:
+      - "8000:8000"
+    networks:
+      - currency-network
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+
+  currency-conversion:
+    platform: linux/amd64
+    image: shonsu/msrvc-currency-conversion-service:1.0-SNAPSHOT
+    ports:
+      - "8100:8100"
+    networks:
+      - currency-network
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+
+  api-gateway:
+    platform: linux/amd64
+    image: shonsu/msrvc-api-gateway:1.0-SNAPSHOT
+    ports:
+      - "8765:8765"
+    networks:
+      - currency-network
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - currency-network
+    command: --logging.level.zipkin2=DEBUG
+    environment:
+      - STORAGE_TYPE=mem
+      - MYSQL_HOST=mysql
+networks:
+  currency-network:
