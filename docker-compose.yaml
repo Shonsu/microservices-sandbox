@@ -33,7 +33,7 @@ services:
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
-      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
 
   currency-conversion:
     platform: linux/amd64
@@ -47,7 +47,7 @@ services:
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
-      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
 
   api-gateway:
     platform: linux/amd64
@@ -61,7 +61,7 @@ services:
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
-      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411
+      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
 
   zipkin-server:
     image: openzipkin/zipkin
@@ -70,8 +70,8 @@ services:
     networks:
       - currency-network
     command: --logging.level.zipkin2=DEBUG
-    environment:
-      - STORAGE_TYPE=mem
-      - MYSQL_HOST=mysql
+#    environment:
+#      - STORAGE_TYPE=mem
+#      - MYSQL_HOST=mysql
 networks:
   currency-network:
