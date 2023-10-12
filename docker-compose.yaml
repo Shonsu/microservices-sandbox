@@ -30,10 +30,14 @@ services:
       - currency-network
     depends_on:
       - eureka-server
+      - rabbitmq
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
       MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
+      RABBIT_URI: amqp://guest:guest @rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
 
   currency-conversion:
     platform: linux/amd64
@@ -44,10 +48,14 @@ services:
       - currency-network
     depends_on:
       - eureka-server
+      - rabbitmq
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
       MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
 
   api-gateway:
     platform: linux/amd64
@@ -58,10 +66,14 @@ services:
       - currency-network
     depends_on:
       - eureka-server
+      - rabbitmq
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
       MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
 
   zipkin-server:
     image: openzipkin/zipkin
@@ -70,8 +82,18 @@ services:
     networks:
       - currency-network
     command: --logging.level.zipkin2=DEBUG
-#    environment:
-#      - STORAGE_TYPE=mem
-#      - MYSQL_HOST=mysql
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+
+  rabbitmq:
+    image: rabbitmq:3.12.3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      currency-network:
+
 networks:
   currency-network:
