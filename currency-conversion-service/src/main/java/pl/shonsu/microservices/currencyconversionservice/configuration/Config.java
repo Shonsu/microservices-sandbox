@@ -1,14 +1,17 @@
 package pl.shonsu.microservices.currencyconversionservice.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class Config {
+    @Value("${app.exchangeServiceName}:8000")
+    private String exchangeServiceHostname;
     @Bean
     WebClient webClient(WebClient.Builder builder) {
-        return builder.baseUrl("http://localhost:8000").build();
+        return builder.baseUrl(exchangeServiceHostname).build();
     }
 
 //    @Bean
