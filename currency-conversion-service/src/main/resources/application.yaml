@@ -3,16 +3,16 @@ server:
 spring:
   application:
     name: currency-conversion
-  config:
-    import: optional:configserver:http://localhost:8888
+#  config:
+#    import: optional:configserver:http://localhost:8888
 #  cloud:
 #    openfeign:
 #      micrometer:
 #        enabled: false
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
 management:
   tracing:
     sampling:
