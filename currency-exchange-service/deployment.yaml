@@ -23,7 +23,7 @@ spec:
         app: currency-exchange
     spec:
       containers:
-      - image: shonsu/msrvc-currency-exchange-service:0.0.12-SNAPSHOT
+      - image: shonsu/msrvc-currency-exchange-service:0.0.13-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: msrvc-currency-exchange-service
       restartPolicy: Always

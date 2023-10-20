@@ -26,11 +26,14 @@ spec:
       - image: shonsu/msrvc-currency-conversion-service:0.0.14-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: msrvc-currency-conversion-service
-        env:
-          - name: CURRENCY_EXCHANGE_URI
-            value: http://currency-exchange
-          - name: CURRENCY_EXCHANGE_PORT
-            value: "8000"
+        envFrom:
+          - configMapRef:
+              name: currency-conversion
+#        env:
+#          - name: CURRENCY_EXCHANGE_URI
+#            value: "http://currency-exchange"
+#          - name: CURRENCY_EXCHANGE_PORT
+#            value: "8000"
       restartPolicy: Always
       tolerations:
       - effect: NoSchedule
@@ -60,3 +63,13 @@ spec:
     app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
+---
+apiVersion: v1
+data:
+  CURRENCY_EXCHANGE_PORT: "8000"
+  CURRENCY_EXCHANGE_URI: "http://currency-exchange"
+kind: ConfigMap
+metadata:
+  name: currency-conversion
+  namespace: default
+
