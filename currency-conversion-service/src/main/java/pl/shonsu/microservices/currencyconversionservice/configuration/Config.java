@@ -7,11 +7,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class Config {
-    @Value("${app.exchangeServiceName}:8000")
+    @Value("${app.exchangeServiceName}")
     private String exchangeServiceHostname;
+    @Value("${app.exchangeServicePort}")
+    private String exchangeServicePort;
+
     @Bean
     WebClient webClient(WebClient.Builder builder) {
-        return builder.baseUrl(exchangeServiceHostname).build();
+        return builder.baseUrl(exchangeServiceHostname + ":" + exchangeServicePort).build();
     }
 
 //    @Bean

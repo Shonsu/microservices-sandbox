@@ -29,4 +29,5 @@ logging:
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
 app:
-  exchangeServiceName: ${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}
+  exchangeServiceName: ${CURRENCY_EXCHANGE_URI:http://localhost}
+  exchangeServicePort: ${CURRENCY_EXCHANGE_PORT:8000}

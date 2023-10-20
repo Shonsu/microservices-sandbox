@@ -37,7 +37,7 @@ public class CurrencyExchangeController {
             host = addr.getHostName();
             logger.info("Getting host name from InetAddress: %s".formatted(host));
         }
-        String version = "v11";
+        String version = "v12";
         exchange.setEnvironment(host + ":" + port + " " + version);
         return exchange;
     }
