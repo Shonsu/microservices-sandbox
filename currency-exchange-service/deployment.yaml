@@ -26,6 +26,16 @@ spec:
       - image: shonsu/msrvc-currency-exchange-service:0.0.13-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: msrvc-currency-exchange-service
+        readinessProbe:
+          httpGet:
+            port: 8000
+            path: /actuator/health/readiness
+        livenessProbe:
+          httpGet:
+            port: 8000
+            path: /actuator/health/liveness
+          initialDelaySeconds: 90
+          periodSeconds: 10
       restartPolicy: Always
       tolerations:
       - effect: NoSchedule
